@@ -1,0 +1,307 @@
+﻿/*=============SASS CSS Demo=============
+/*=======================================
+/*=======Auther: Dharmesh Pipariya=======
+/*=======================================
+/*
+/*====Reference: http://sass-lang.com====
+/*
+*/
+
+@import 'colors';
+
+/*=======Variables=======*/
+$font-family: Lato, Helvetica, Arial, sans-serif;
+
+
+body {
+    font: {
+        family: $font-family;
+        size: 14px;
+        weight: normal;
+    }
+
+    color: $wet-asphalt-color;
+}
+
+a {
+    color: $peter-river-color;
+}
+
+
+/*=======Nesting=======*/
+.navbar-default {
+    background-color: $wet-asphalt-color;
+
+    .navbar-brand {
+        color: $white-color;
+
+        &:hover, &:focus {
+            color: $turquoise-color;
+        }
+    }
+
+    .navbar-nav {
+        & > li {
+            & > a {
+                color: $white-color;
+
+                &:hover, &:focus {
+                    color: $turquoise-color;
+                }
+            }
+        }
+
+        & > .active {
+            & > a, & > a:hover, & > a:focus {
+                color: $white-color;
+                background-color: $turquoise-color;
+            }
+        }
+
+        & > .dropdown {
+            & > a {
+                .caret {
+                    border-top-color: $white-color;
+                    border-bottom-color: $white-color;
+                }
+
+                &:hover, &:focus {
+                    .caret {
+                        border-top-color: $turquoise-color;
+                        border-bottom-color: $turquoise-color;
+                    }
+                }
+            }
+        }
+
+        & > .open {
+            & > a, & > a:hover, & > a:focus {
+                color: $white-color;
+                background-color: $turquoise-color;
+
+                .caret {
+                    border-top-color: $white-color;
+                    border-bottom-color: $white-color;
+                }
+            }
+        }
+    }
+}
+
+.dropdown-menu {
+    background-color: $clouds-color;
+
+    border {
+        color: $silver-color;
+    }
+
+    li {
+        a:hover, a:focus {
+            color: $white-color;
+            background-color: $peter-river-color;
+        }
+    }
+}
+
+.btn-primary {
+    color: $white-color;
+    background-color: $peter-river-color;
+}
+
+.jumbotron {
+    background-color: $clouds-color;
+}
+
+/*=======Mixins=======*/
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+/*@mixin clearfix {
+    display: inline-block;
+
+    &:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+    * html & {
+        height: 1px;
+    }
+}*/
+
+.container .jumbotron {
+    @include border-radius(6px);
+}
+
+/*$color: white;
+@mixin colors($color: blue) {
+    background-color: $color;
+    @content;
+    border-color: $color;
+}
+
+p {
+    @include colors {
+        color: $color;
+    }
+}*/
+
+@mixin adjust-location($x, $y) {
+    @if unitless($x) {
+        @warn "Assuming #{$x} to be in pixels";
+        $x: 1px * $x;
+    }
+
+    @if unitless($y) {
+        @warn "Assuming #{$y} to be in pixels";
+        $y: 1px * $y;
+    }
+
+    position: relative;
+    left: $x;
+    top: $y;
+}
+
+@mixin adjust-location($x, $y) {
+    @if unitless($x) {
+        @error "$x may not be unitless, was #{$x}.";
+    }
+
+    @if unitless($y) {
+        @error "$y may not be unitless, was #{$y}.";
+    }
+
+    position: relative;
+    left: $x;
+    top: $y;
+}
+
+/*=======Control Directives & Expressions=======*/
+//@if
+$type: monster;
+
+p {
+    @if $type == ocean {
+        color: $nephritis-color;
+    }
+    @else if $type == matador {
+        color: $pumpkin-color;
+    }
+    @else if $type == monster {
+        color: $sun-flower-color;
+    }
+    @else {
+        color: $silver-color;
+    }
+}
+
+//@for
+@for $i from 1 through 3 {
+    .item-#{$i} {
+        width: 2em * $i;
+    }
+}
+
+//@each
+@each $animal in puma, sea-slug, egret, salamander {
+    .#{$animal}-icon {
+        background-image: url('/images/#{$animal}.png');
+    }
+}
+
+@each $animal, $color, $cursor in (puma, black, default), (sea-slug, blue, pointer), (egret, white, move) {
+    .#{$animal}-icon {
+        background-image: url('/images/#{$animal}.png');
+
+        border: {
+            color: $asbestos-color;
+            width: 2px;
+            style: solid;
+        }
+
+        cursor: $cursor;
+    }
+}
+
+@each $header, $size in (h1: 2em, h2: 1.5em, h3: 1.2em) {
+    #{$header} {
+        font-size: $size;
+    }
+}
+
+//@while
+$i: 6;
+
+@while $i > 0 {
+    .item-#{$i} {
+        width: 2em * $i;
+    }
+
+    $i: $i - 2;
+}
+
+//Function Directives
+$grid-width: 40px;
+$gutter-width: 10px;
+
+@function grid-width($n) {
+    @return $n * $grid-width + ($n - 1) * $gutter-width;
+}
+
+#sidebar {
+    width: grid-width(5);
+}
+
+/*=======Extend/Inheritance=======*/
+.message {
+    padding: 10px;
+    color: $white-color;
+}
+
+.success {
+    @extend .message;
+    background-color: $nephritis-color;
+}
+
+.error {
+    @extend .message;
+    background-color: $pumpkin-color;
+}
+
+.warning {
+    @extend .message;
+    background-color: $sun-flower-color;
+}
+
+
+
+/*=======Operators=======*/
+.container {
+    width: 100%;
+}
+
+article[role="main"] {
+    float: left;
+    width: 600px / 960px * 100%;
+}
+
+aside[role="complimentary"] {
+    float: right;
+    width: 300px / 960px * 100%;
+}
+/*$translucent-red: rgba(255, 0, 0, 0.5);
+
+p {
+    color: opacify($translucent-red, 0.3);
+    background-color: transparentize($translucent-red, 0.25);
+}*/
+/*p {
+  cursor: e + -resize;
+}*/
